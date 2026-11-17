@@ -135,12 +135,13 @@ async def delete_product(product_id: int, db: Session = Depends(get_db)) -> dict
     Удаляет товар по его ID.
     """
     # Проверка существования товара
-    get_product(product_id, db)
+    product = get_product(product_id, db)
 
     # Удаление товара из активных
-    db.execute(update(ProductModel)
-               .where(ProductModel.id == product_id)
-               .values(is_active=False)
-    )
+    # db.execute(update(ProductModel)
+    #            .where(ProductModel.id == product_id)
+    #            .values(is_active=False)
+    # )
+    product.is_active = False
     db.commit()
     return {"status": "success", "message": "Product marked as inactive"}
